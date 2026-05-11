@@ -270,25 +270,29 @@ body {
 #card-name {
   position: absolute;
   left: 58px; top: 445px;
-  width: 517px; height: 60px;
+  width: 517px;
   font-weight: 800;
   font-size: 40px;
-  line-height: 60px;
+  line-height: 35px;
   color: #09E6FF;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
   pointer-events: none;
 }
 #card-sector {
   position: absolute;
-  left: 58px; top: 510px;
-  width: 517px; height: 60px;
+  left: 58px;
+  width: 517px;
   font-weight: 400;
   font-size: 40px;
-  line-height: 60px;
+  line-height: 35px;
   color: #fff;
   overflow: hidden;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
   pointer-events: none;
 }
 
@@ -622,9 +626,19 @@ function setLang(lang) {
   document.getElementById('btn-es').classList.toggle('active', lang === 'es');
 }
 
+const NAME_TOP = 445;
+const NAME_SECTOR_GAP = 10;
+
+function repositionSector() {
+  const nameEl = document.getElementById('card-name');
+  const sectorEl = document.getElementById('card-sector');
+  sectorEl.style.top = (NAME_TOP + nameEl.offsetHeight + NAME_SECTOR_GAP) + 'px';
+}
+
 function sync(inputId, targetId) {
   document.getElementById(targetId).textContent =
     document.getElementById(inputId).value;
+  if (targetId === 'card-name') repositionSector();
 }
 
 function loadPhoto(input) {
@@ -690,6 +704,7 @@ function applyScale() {
 
 window.addEventListener('resize', applyScale);
 applyScale();
+repositionSector();
 </script>
 </body>
 </html>
