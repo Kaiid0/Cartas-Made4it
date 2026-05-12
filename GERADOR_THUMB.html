@@ -264,8 +264,17 @@ body {
     <div class="section-divider">Configurações</div>
 
     <div class="form-group">
+      <label>Língua</label>
+      <select id="sel-lingua" onchange="onLinguaChange()">
+        <option value="PTBR">Português (PT-BR)</option>
+        <option value="ESP">Español (ES)</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label>Parceiro</label>
       <select id="sel-parceiro" onchange="onParceiroChange()">
+        <option value="Nenhuma">NENHUMA</option>
         <option value="Celeti">CELETI</option>
         <option value="Vooa">VOOA</option>
       </select>
@@ -313,14 +322,27 @@ function onCourseChange() {
   const c = COURSES[idx];
   document.getElementById('bg-img').src    = BG_DATA[c.bg];
   document.getElementById('card-mote').src = MOTE_DATA[c.label];
-  document.getElementById('card-lingua').src = LINGUA_DATA[c.lang];
   document.getElementById('badge-bg').textContent   = c.bg;
   document.getElementById('badge-lang').textContent = c.lang === 'PTBR' ? 'Português' : 'Español';
+  // sync the língua selector to the course default, then apply
+  document.getElementById('sel-lingua').value = c.lang;
+  onLinguaChange();
+}
+
+function onLinguaChange() {
+  const lang = document.getElementById('sel-lingua').value;
+  document.getElementById('card-lingua').src = LINGUA_DATA[lang];
 }
 
 function onParceiroChange() {
   const val = document.getElementById('sel-parceiro').value;
-  document.getElementById('card-parceiro').src = PARC_DATA[val];
+  const img = document.getElementById('card-parceiro');
+  if (val === 'Nenhuma') {
+    img.style.display = 'none';
+  } else {
+    img.src = PARC_DATA[val];
+    img.style.display = 'block';
+  }
 }
 
 function onQtyChange() {
